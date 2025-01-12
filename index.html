@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cool Symbol Copy Tool</title>
+	
+    <!-- Favicon (Tab Image) -->
+    <link rel="icon" type="image/png" href="NLC Profile.png">
+	
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            background-color: #1a1a2e;
+            color: #e6e6e6;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            font-size: 2.5rem;
+            color: #ffdd57;
+            margin: 20px 0;
+        }
+        h2 {
+            color: #ffdd57;
+            margin: 20px 0 10px;
+            font-size: 1.8rem;
+        }
+        
+        /* Copy Tool Container */
+        .copy-tool {
+            margin: 20px auto;
+            width: 80%;
+            max-width: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #2a2a40;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .copy-tool input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            font-size: 1rem;
+            color: #333;
+            border: none;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        .copy-tool button {
+            padding: 10px 15px;
+            font-size: 1rem;
+            color: white;
+            background-color: #ff5555;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .copy-tool button:hover {
+            background-color: #ff4444;
+        }
+        
+        /* Symbol Categories */
+        .category {
+            margin-bottom: 30px;
+        }
+        .symbol-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            padding: 20px;
+        }
+        .symbol {
+            font-size: 2rem;
+            padding: 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out, background-color 0.3s;
+            background-color: #333;
+            border-radius: 50%;
+            color: #ffdd57;
+        }
+        .symbol:hover {
+            transform: rotate(360deg) scale(1.3);
+            background-color: #444;
+        }
+        
+        /* Notification */
+        #notification {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #ffdd57;
+            color: #333;
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-size: 1rem;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s, visibility 0.4s;
+        }
+        
+        footer {
+            padding: 20px;
+            font-size: 1rem;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Cool Symbol Copy Tool</h1>
+
+    <!-- Copy and Clear Tool -->
+    <div class="copy-tool">
+        <input type="text" id="copyInput" placeholder="Enter or copy symbols here..." />
+        <button onclick="copyText()">Copy</button>
+        <button onclick="clearText()">Clear</button>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification">Copied to clipboard!</div>
+
+    <!-- Symbol Categories -->
+    <div id="symbols"></div>
+
+    <footer>
+        <p>&copy; 2024 NerdJoe. All rights reserved.</p>
+    </footer>
+
+    <!-- Comments Section -->
+    <div id="comments"></div>
+    <script src="https://giscus.app/client.js"
+        data-repo="NerdMakesAWebsite/CoolSymbolCopyTools"
+        data-repo-id="REPO_ID"
+        data-category="CATEGORY_NAME"
+        data-category-id="CATEGORY_ID"
+        data-mapping="pathname"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-theme="dark"
+        crossorigin="anonymous"
+        async>
+    </script>
+
+
+    <script>
+        // Symbol categories
+        const symbolCategories = [
+            { name: "Stars", symbols: ['★', '☆', '≛', '⋆', '⍟', '⍣', '✡', '✦', '✧', '✪', '✫', '✬', '✯', '✰', '✴', '✵', '✶', '✷', '✸', '✹', '❂', '⭑', '⭒'] },
+            { name: "Copyright, Trademark, Law & Office", symbols: ['©', '®', '™', '℗', '℠', '🄬', '🄫', '℡', '☎', '☏', '✆', '⚖', '§', '☤', '℅', '℆', '℞', '℣', '℥', '℀', '℁', '🏳', '⌨', '✁', '✂', '✃', '✄', '✈', '✉', '✎', '✏', '✐', '✑', '✒', '☞', '☛', '☟', '☜', '☚'] },
+            { name: "Dangerous Things", symbols: ['☢', '☣'] },
+            { name: "Brackets", symbols: ['⟨', '⟩', '❨', '❩', '❪', '❫', '❲', '❳', '〈', '〉', '《', '》', '「', '」', '『', '』', '〔', '〕', '【', '】', '〖', '〗', '〘', '〙', '〚', '〛'] },
+            { name: "Chess", symbols: ['♔', '♕', '♖', '♗', '♘', '♙', '♚', '♛', '♜', '♝', '♞', '♟'] },
+            { name: "Playing Cards", symbols: ['♠', '♥', '♦', '♣', '♤', '♡', '♢', '♧', '🂠', '🂡', '🃑', '🂢', '🂣', '🂤', '🂥', '🂦', '🂧', '🂨', '🂩', '🂪', '🂫', '🂬', '🂭', '🂮'] },
+            { name: "Musical Notes", symbols: ['🎙', '🎚', '🎛', '𝅜', '𝅝', '𝅗𝅥', '𝅘𝅥', '♪', '𝅘𝅥𝅮', '𝅘𝅥𝅮', '𝅘𝅥𝅯', '𝅘𝅥𝅰', '𝅘𝅥𝅱', '𝅘𝅥𝅲', '♫', '♬', '♭', '♮', '♯', '𝄀', '𝄁', '𝄂', '𝄃', '𝄄', '𝄅', '𝄆', '𝄇', '𝄈', '𝄞', '𝄟', '𝄠', '𝄡', '𝄢', '𝄣', '𝄤', '𝄫', '𝄬', '𝄭', '𝄮', '𝄯', '𝄰', '𝄱', '𝄲', '𝄳', '𝄺', '𝄻', '𝄼', '𝄽', '𝄾', '𝄿', '𝅀', '𝅁', '𝅂', '𝆔', '𝆕', '𝆺𝅥', '𝆹𝅥𝅮', '𝆺𝅥𝅮', '𝆹𝅥𝅯', '𝆺𝅥𝅯', '𝇒', '𝇓', '𝇕', '𝇗', '𝇛'] },
+            { name: "Degrees", symbols: ['°', '℃', '℉'] },
+            { name: "Measurement Units", symbols: ['ℓ', '㎏', '㎜', '㎞', '㎡', '㏄', '㏊', '㏌', '㏍', '㏎'] },
+            { name: "Arrows", symbols: ['→', '←', '↑', '↓', '↔', '↕', '↖', '↗', '↘', '↙', '⟿', '⟴', '➡️', '⬆️'] },
+            { name: "Hearts", symbols: ['❤', '❥', '♥', '♡', '❣', '🎔', '❦', '❧', '☙'] },
+            { name: "Checkmarks & Crosses", symbols: ['✔', '✓', '🗸', '⍻', '☑', '🗹', '✕', '✖', '✗', '✘', '☒'] },
+            { name: "Gender & People", symbols: ['♂', '♀', '⚤', '⚢', '⚣', '⚥', '⚦', '⚨', '⚧'] },
+            { name: "Smileys & Faces", symbols: ['☺', '☹', '☻', '〠', '☠'] },
+            { name: "Punctuation Marks", symbols: ['‼', '⁇', '⁉', '‽', '¡', '¿'] },
+            { name: "Math Symbols", symbols: ['∑', '∏', '∫', '√', '∛', '∜', '≠', '≈', '≉', '≍', '≭', '≤', '≥', '≰', '≱', '∞', '∝', '≅', '∇', '∂', '≡', '∴'] },
+            { name: "Fractions & Numbers", symbols: ['⅟', '½', '↉', '⅓', '⅔', '¼', '¾', '⅕', '⅖', '⅗', '⅘', '⅙', '⅚', '⅐', '⅛', '⅜', '⅝', '⅞', '⅑', '⅒', 'Ⅰ', 'Ⅱ', 'Ⅲ', 'Ⅳ', 'Ⅴ', 'Ⅵ', 'Ⅶ', 'Ⅷ', 'Ⅸ', 'Ⅹ', 'Ⅺ', 'Ⅻ'] },
+            { name: "Technical & Tools", symbols: ['⚙', '⚛', '⚒', '⚗'] },
+            { name: "Squares & Rectangles", symbols: ['■', '□', '▢', '▣', '▤', '▥', '▦', '▧', '▨', '▩', '▪', '▫'] },
+            { name: "Triangles", symbols: ['▲', '△', '▼', '▽', '◀', '▶', '◁', '▷', '▸', '◂', '⏴', '⏵', '‣'] },
+            { name: "Lines & Corners", symbols: ['─', '━', '⁃', '│', '┃', '┌', '┐', '└', '┘', '┬', '┴', '┼', '╱', '╲'] },
+            { name: "Circles & Dots", symbols: ['●', '○', '◉', '◎', '◍', '◦', '•'] },
+            { name: "Weather & Seasonal", symbols: ['☀', '☁', '⛈', '🌤', '🌥', '🌦', '🌧', '🌨', '🌩', '🌪', '🌫', '☇', '☈', '☄', '☂', '⛇', '☃', '☉', '☼', '☽', '☾', '❄', '❅', '❆'] },
+            { name: "Currency", symbols: ['$', '¢', '£', '¥', '₠', '₡', '₢', '₣', '₤', '₥', '₦', '₧', '€', '₹', '₩', '₪', '₮', '৳', '௹', '฿'] },
+            { name: "Animals & Flowers", symbols: ['🐿', '🕊', '🕷', '🕸', '✾', '✿', '❀', '❁'] },
+            { name: "Recycling", symbols: ['♲', '♻', '♳', '♴', '♵', '♶', '♷', '♸', '♹', '♺', '♼', '♽'] }
+        ];
+
+        // Generate symbols with categories
+        const symbolsDiv = document.getElementById('symbols');
+        symbolCategories.forEach(category => {
+            const categoryDiv = document.createElement('div');
+            categoryDiv.classList.add('category');
+
+            const categoryTitle = document.createElement('h2');
+            categoryTitle.textContent = category.name;
+            categoryDiv.appendChild(categoryTitle);
+
+            const symbolContainer = document.createElement('div');
+            symbolContainer.classList.add('symbol-container');
+
+            category.symbols.forEach(symbol => {
+                const symbolElem = document.createElement('div');
+                symbolElem.classList.add('symbol');
+                symbolElem.textContent = symbol;
+                symbolElem.addEventListener('click', () => appendToInput(symbol));
+                symbolContainer.appendChild(symbolElem);
+            });
+
+            categoryDiv.appendChild(symbolContainer);
+            symbolsDiv.appendChild(categoryDiv);
+        });
+
+        // Function to copy the symbol to clipboard without adding it to the text box
+        function appendToInput(symbol) {
+            showNotification(`${symbol} copied to clipboard!`);
+            navigator.clipboard.writeText(symbol);
+        }
+
+        // Function to copy content of text box to clipboard
+        function copyText() {
+            const input = document.getElementById('copyInput');
+            navigator.clipboard.writeText(input.value).then(() => {
+                showNotification(`Text copied to clipboard!`);
+            });
+        }
+
+       // Function to copy content of text box to clipboard and show copied text in the notification
+       function copyText() {
+           const input = document.getElementById('copyInput');
+           const copiedText = input.value; // Get the current content of the text box
+           navigator.clipboard.writeText(copiedText).then(() => {
+               showNotification(`${copiedText} copied to clipboard!`);
+           });
+       }
+
+        // Clear text box
+        function clearText() {
+            document.getElementById('copyInput').value = "";
+        }
+
+       // Show notification
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.style.opacity = '1';
+            notification.style.visibility = 'visible';
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.visibility = 'hidden';
+            }, 1500);
+        }
+    </script>
+</body>
+</html>
