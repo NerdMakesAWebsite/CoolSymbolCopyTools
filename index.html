@@ -10,26 +10,145 @@
 	
     <style>
         /* Global Styles */
+        :root {
+            --primary-color: #00ff00;
+            --secondary-color: #0d0f12;
+            --tertiary-color: #333;
+            --text-color: #00ff00;
+            --background-color: #0d0f12;
+            --card-background: #1c1e22;
+            --shadow-color: rgba(0, 255, 0, 0.5);
+            --glow-intensity: 1;
+        }
+        
+        .light-mode {
+            --primary-color: #007700;
+            --secondary-color: #f0f0f0;
+            --tertiary-color: #dddddd;
+            --text-color: #005500;
+            --background-color: #f7f7f7;
+            --card-background: #ffffff;
+            --shadow-color: rgba(0, 119, 0, 0.3);
+            --glow-intensity: 0.5;
+        }
+        
         body {
             font-family: 'Courier New', monospace;
             text-align: center;
-            background-color: #0d0f12;
-            color: #00ff00;
+            background-color: var(--background-color);
+            color: var(--text-color);
             margin: 0;
             padding: 0;
             overflow-x: hidden;
+            transition: all 0.5s ease;
         }
+        
         h1 {
-            font-size: 3rem;
-            color: #00ff00;
+            font-size: 3.5rem;
+            color: var(--text-color);
             margin: 20px 0;
-            text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
+            text-shadow: 0 0 calc(10px * var(--glow-intensity)) var(--primary-color), 
+                         0 0 calc(20px * var(--glow-intensity)) var(--primary-color);
+            animation: pulse 3s infinite alternate;
+            letter-spacing: 2px;
         }
+        
         h2 {
-            color: #00ff00;
+            color: var(--text-color);
             margin: 20px 0 10px;
             font-size: 1.8rem;
-            text-shadow: 0 0 5px #00ff00;
+            text-shadow: 0 0 calc(5px * var(--glow-intensity)) var(--primary-color);
+            position: relative;
+            display: inline-block;
+        }
+        
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 10%;
+            width: 80%;
+            height: 2px;
+            background-color: var(--primary-color);
+            box-shadow: 0 0 calc(8px * var(--glow-intensity)) var(--primary-color);
+        }
+        
+        /* Animations */
+        @keyframes pulse {
+            0% { opacity: 0.8; }
+            100% { opacity: 1; text-shadow: 0 0 calc(15px * var(--glow-intensity)) var(--primary-color), 
+                                            0 0 calc(30px * var(--glow-intensity)) var(--primary-color); }
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        /* Header */
+        .header {
+            padding: 20px;
+            position: relative;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 15px;
+            background-color: var(--tertiary-color);
+            border: 1px solid var(--primary-color);
+            color: var(--text-color);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 100;
+            box-shadow: 0 0 calc(10px * var(--glow-intensity)) var(--shadow-color);
+        }
+        
+        .theme-toggle:hover {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            transform: scale(1.05);
+        }
+        
+        /* Search Tool */
+        .search-tool {
+            margin: 20px auto;
+            width: 80%;
+            max-width: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: var(--card-background);
+            padding: 15px;
+            border-radius: 50px;
+            box-shadow: 0 4px 8px var(--shadow-color);
+            transition: all 0.3s;
+        }
+        
+        .search-tool:focus-within {
+            transform: scale(1.03);
+            box-shadow: 0 6px 12px var(--shadow-color);
+        }
+        
+        .search-tool input[type="text"] {
+            flex: 1;
+            padding: 12px 20px;
+            font-size: 1.1rem;
+            color: var(--text-color);
+            background-color: transparent;
+            border: none;
+            border-radius: 50px;
+            box-shadow: none;
+            transition: all 0.3s;
+        }
+        
+        .search-tool input[type="text"]:focus {
+            outline: none;
         }
         
         /* Copy Tool Container */
@@ -40,46 +159,103 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background-color: #1c1e22;
-            padding: 10px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 255, 0, 0.5);
+            background-color: var(--card-background);
+            padding: 15px;
+            border-radius: 50px;
+            box-shadow: 0 4px 8px var(--shadow-color);
+            transition: all 0.3s;
         }
+        
+        .copy-tool:focus-within {
+            transform: scale(1.03);
+            box-shadow: 0 6px 12px var(--shadow-color);
+        }
+        
         .copy-tool input[type="text"] {
             flex: 1;
-            padding: 10px;
-            font-size: 1rem;
-            color: #00ff00;
-            background-color: #1c1e22;
-            border: 1px solid #00ff00;
-            border-radius: 5px;
+            padding: 12px 20px;
+            font-size: 1.1rem;
+            color: var(--text-color);
+            background-color: transparent;
+            border: none;
+            border-radius: 50px;
             margin-right: 10px;
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
+            box-shadow: none;
+            transition: all 0.3s;
         }
+        
         .copy-tool input[type="text"]:focus {
             outline: none;
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.8);
         }
-        .copy-tool button {
-            padding: 10px 15px;
+        
+        .btn {
+            padding: 10px 20px;
             font-size: 1rem;
-            color: #00ff00;
-            background-color: #333;
-            border: 1px solid #00ff00;
-            border-radius: 5px;
+            color: var(--text-color);
+            background-color: var(--tertiary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 50px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: all 0.3s;
+            margin: 0 5px;
+            box-shadow: 0 0 calc(8px * var(--glow-intensity)) var(--shadow-color);
         }
-        .copy-tool button:hover {
-            background-color: #00ff00;
-            color: #333;
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.7);
+        
+        .btn:hover {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            transform: scale(1.05);
+            box-shadow: 0 0 calc(15px * var(--glow-intensity)) var(--shadow-color);
+        }
+        
+        /* Symbol Categories Navigation */
+        .categories-nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px auto;
+            padding: 10px;
+            max-width: 90%;
+        }
+        
+        .category-btn {
+            padding: 8px 15px;
+            background-color: var(--tertiary-color);
+            color: var(--text-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+        
+        .category-btn:hover, .category-btn.active {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            transform: scale(1.05);
+            box-shadow: 0 0 calc(10px * var(--glow-intensity)) var(--shadow-color);
         }
         
         /* Symbol Categories */
         .category {
-            margin-bottom: 30px;
+            margin-bottom: 40px;
+            padding: 20px;
+            background-color: var(--card-background);
+            border-radius: 15px;
+            box-shadow: 0 4px 15px var(--shadow-color);
+            transition: all 0.5s;
+            max-width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+            overflow: hidden;
         }
+        
+        .category:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px var(--shadow-color);
+        }
+        
         .symbol-container {
             display: flex;
             flex-wrap: wrap;
@@ -87,20 +263,118 @@
             gap: 15px;
             padding: 20px;
         }
+        
         .symbol {
             font-size: 2rem;
-            padding: 10px;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
-            transition: transform 0.3s ease-in-out, background-color 0.3s;
-            background-color: #333;
+            transition: all 0.4s ease;
+            background-color: var(--tertiary-color);
             border-radius: 50%;
-            color: #00ff00;
-            box-shadow: 0 0 5px rgba(0, 255, 0, 0.6);
+            color: var(--text-color);
+            box-shadow: 0 0 calc(5px * var(--glow-intensity)) var(--shadow-color);
+            position: relative;
+            overflow: hidden;
         }
+        
+        .symbol::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, var(--primary-color, #00ff00) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s;
+            z-index: -1;
+        }
+        
         .symbol:hover {
             transform: rotate(360deg) scale(1.3);
-            background-color: #444;
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.9);
+            background-color: var(--card-background);
+            box-shadow: 0 0 calc(15px * var(--glow-intensity)) var(--shadow-color);
+        }
+        
+        .symbol:hover::before {
+            opacity: 0.3;
+        }
+        
+        .symbol:active {
+            transform: scale(0.9);
+        }
+        
+        /* Favorites Section */
+        #favorites {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 15px;
+            background-color: var(--card-background);
+            box-shadow: 0 4px 15px var(--shadow-color);
+            max-width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        #favorites h2 {
+            color: var(--text-color);
+            text-shadow: 0 0 calc(8px * var(--glow-intensity)) var(--primary-color);
+        }
+        
+        #favorites-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            padding: 20px;
+            min-height: 80px;
+        }
+        
+        .favorite-symbol {
+            font-size: 2rem;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background-color: var(--tertiary-color);
+            border-radius: 50%;
+            color: var(--text-color);
+            box-shadow: 0 0 calc(8px * var(--glow-intensity)) var(--shadow-color);
+            position: relative;
+        }
+        
+        .favorite-symbol:hover {
+            transform: scale(1.2);
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+        }
+        
+        .favorite-symbol .remove-fav {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .favorite-symbol:hover .remove-fav {
+            opacity: 1;
         }
         
         /* Notification */
@@ -108,46 +382,158 @@
             position: fixed;
             bottom: 20px;
             left: 50%;
-            transform: translateX(-50%);
-            background-color: #00ff00;
-            color: #0d0f12;
+            transform: translateX(-50%) translateY(100px);
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
             padding: 15px 25px;
-            border-radius: 8px;
+            border-radius: 50px;
             font-size: 1rem;
             box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.5);
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.4s, visibility 0.4s;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            z-index: 1000;
         }
         
+        #notification.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Footer */
         footer {
-            padding: 20px;
+            padding: 30px 20px;
             font-size: 1rem;
-            color: #777;
-            background-color: #0d0f12;
-            box-shadow: 0 -2px 8px rgba(0, 255, 0, 0.3);
+            color: var(--text-color);
+            background-color: var(--card-background);
+            box-shadow: 0 -2px 8px var(--shadow-color);
+            margin-top: 50px;
+        }
+        
+        footer p {
+            opacity: 0.8;
+        }
+        
+        /* Scroll to top button */
+        .scroll-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--tertiary-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            opacity: 0;
+            visibility: hidden;
+            border: 1px solid var(--primary-color);
+            box-shadow: 0 0 calc(10px * var(--glow-intensity)) var(--shadow-color);
+            z-index: 100;
+            font-size: 1.5rem;
+        }
+        
+        .scroll-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .scroll-top:hover {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            transform: scale(1.1);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .copy-tool, .search-tool {
+                width: 90%;
+                flex-direction: column;
+                gap: 10px;
+                border-radius: 15px;
+            }
+            
+            .copy-tool input[type="text"], .search-tool input[type="text"] {
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 10px;
+                border-radius: 10px;
+            }
+            
+            .btn-container {
+                display: flex;
+                width: 100%;
+                justify-content: space-around;
+            }
+            
+            .symbol {
+                width: 50px;
+                height: 50px;
+                font-size: 1.7rem;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" id="themeToggle">🌓 Toggle Theme</button>
+    
+    <!-- Scroll to Top Button -->
+    <div class="scroll-top" id="scrollTop">↑</div>
 
-    <h1>Cool Symbol Copy Tool</h1>
+    <div class="header">
+        <h1>Cool Symbol Copy Tool</h1>
+    </div>
+
+    <!-- Search Tool -->
+    <div class="search-tool">
+        <input type="text" id="searchInput" placeholder="Search for symbols..." />
+        <button class="btn" onclick="searchSymbols()">Search</button>
+    </div>
 
     <!-- Copy and Clear Tool -->
     <div class="copy-tool">
         <input type="text" id="copyInput" placeholder="Enter or copy symbols here..." />
-        <button onclick="copyText()">Copy</button>
-        <button onclick="clearText()">Clear</button>
+        <div class="btn-container">
+            <button class="btn" onclick="copyText()">Copy</button>
+            <button class="btn" onclick="clearText()">Clear</button>
+            <button class="btn" onclick="addToFavorites()">Add to Favorites</button>
+        </div>
+    </div>
+
+    <!-- Favorites Section -->
+    <div id="favorites">
+        <h2>Favorites</h2>
+        <div id="favorites-container">
+            <!-- Favorites will be dynamically added here -->
+        </div>
+    </div>
+
+    <!-- Categories Navigation -->
+    <div class="categories-nav" id="categoriesNav">
+        <!-- Category buttons will be dynamically added here -->
+    </div>
+
+    <!-- Symbol Categories -->
+    <div id="symbols">
+        <!-- Symbol categories will be dynamically added here -->
     </div>
 
     <!-- Notification -->
     <div id="notification">Copied to clipboard!</div>
 
-    <!-- Symbol Categories -->
-    <div id="symbols"></div>
-
     <footer>
         <p>&copy; 2025 NerdJoe. All rights reserved.</p>
+        <p>Collect, copy, and share awesome symbols with ease!</p>
     </footer>
 
     <!-- Comments Section -->
@@ -168,102 +554,455 @@
             async>
     </script>
 
-
     <script>
-        // Symbol categories
-        const symbolCategories = [
-            { name: "Stars", symbols: ['★', '☆', '≛', '⋆', '⍟', '⍣', '✡', '✦', '✧', '✪', '✫', '✬', '✯', '✰', '✴', '✵', '✶', '✷', '✸', '✹', '❂', '⭑', '⭒'] },
-            { name: "Copyright, Trademark, Law & Office", symbols: ['©', '®', '™', '℗', '℠', '🄬', '🄫', '℡', '☎', '☏', '✆', '⚖', '§', '☤', '℅', '℆', '℞', '℣', '℥', '℀', '℁', '🏳', '⌨', '✁', '✂', '✃', '✄', '✈', '✉', '✎', '✏', '✐', '✑', '✒', '☞', '☛', '☟', '☜', '☚'] },
-            { name: "Dangerous Things", symbols: ['☢', '☣'] },
-            { name: "Brackets", symbols: ['⟨', '⟩', '❨', '❩', '❪', '❫', '❲', '❳', '〈', '〉', '《', '》', '「', '」', '『', '』', '〔', '〕', '【', '】', '〖', '〗', '〘', '〙', '〚', '〛'] },
-            { name: "Chess", symbols: ['♔', '♕', '♖', '♗', '♘', '♙', '♚', '♛', '♜', '♝', '♞', '♟'] },
-            { name: "Playing Cards", symbols: ['♠', '♥', '♦', '♣', '♤', '♡', '♢', '♧', '🂠', '🂡', '🃑', '🂢', '🂣', '🂤', '🂥', '🂦', '🂧', '🂨', '🂩', '🂪', '🂫', '🂬', '🂭', '🂮'] },
-            { name: "Musical Notes", symbols: ['🎙', '🎚', '🎛', '𝅜', '𝅝', '𝅗𝅥', '𝅘𝅥', '♪', '𝅘𝅥𝅮', '𝅘𝅥𝅮', '𝅘𝅥𝅯', '𝅘𝅥𝅰', '𝅘𝅥𝅱', '𝅘𝅥𝅲', '♫', '♬', '♭', '♮', '♯', '𝄀', '𝄁', '𝄂', '𝄃', '𝄄', '𝄅', '𝄆', '𝄇', '𝄈', '𝄞', '𝄟', '𝄠', '𝄡', '𝄢', '𝄣', '𝄤', '𝄫', '𝄬', '𝄭', '𝄮', '𝄯', '𝄰', '𝄱', '𝄲', '𝄳', '𝄺', '𝄻', '𝄼', '𝄽', '𝄾', '𝄿', '𝅀', '𝅁', '𝅂', '𝆔', '𝆕', '𝆺𝅥', '𝆹𝅥𝅮', '𝆺𝅥𝅮', '𝆹𝅥𝅯', '𝆺𝅥𝅯', '𝇒', '𝇓', '𝇕', '𝇗', '𝇛'] },
-            { name: "Degrees", symbols: ['°', '℃', '℉'] },
-            { name: "Measurement Units", symbols: ['ℓ', '㎏', '㎜', '㎞', '㎡', '㏄', '㏊', '㏌', '㏍', '㏎'] },
-            { name: "Arrows", symbols: ['→', '←', '↑', '↓', '↔', '↕', '↖', '↗', '↘', '↙', '⟿', '⟴', '➡️', '⬆️'] },
-            { name: "Hearts", symbols: ['❤', '❥', '♥', '♡', '❣', '🎔', '❦', '❧', '☙'] },
-            { name: "Checkmarks & Crosses", symbols: ['✔', '✓', '🗸', '⍻', '☑', '🗹', '✕', '✖', '✗', '✘', '☒'] },
-            { name: "Gender & People", symbols: ['♂', '♀', '⚤', '⚢', '⚣', '⚥', '⚦', '⚨', '⚧'] },
-            { name: "Smileys & Faces", symbols: ['☺', '☹', '☻', '〠', '☠'] },
-            { name: "Punctuation Marks", symbols: ['‼', '⁇', '⁉', '‽', '¡', '¿'] },
-            { name: "Math Symbols", symbols: ['∑', '∏', '∫', '√', '∛', '∜', '≠', '≈', '≉', '≍', '≭', '≤', '≥', '≰', '≱', '∞', '∝', '≅', '∇', '∂', '≡', '∴'] },
-            { name: "Fractions & Numbers", symbols: ['⅟', '½', '↉', '⅓', '⅔', '¼', '¾', '⅕', '⅖', '⅗', '⅘', '⅙', '⅚', '⅐', '⅛', '⅜', '⅝', '⅞', '⅑', '⅒', 'Ⅰ', 'Ⅱ', 'Ⅲ', 'Ⅳ', 'Ⅴ', 'Ⅵ', 'Ⅶ', 'Ⅷ', 'Ⅸ', 'Ⅹ', 'Ⅺ', 'Ⅻ'] },
-            { name: "Technical & Tools", symbols: ['⚙', '⚛', '⚒', '⚗'] },
-            { name: "Squares & Rectangles", symbols: ['■', '□', '▢', '▣', '▤', '▥', '▦', '▧', '▨', '▩', '▪', '▫'] },
-            { name: "Triangles", symbols: ['▲', '△', '▼', '▽', '◀', '▶', '◁', '▷', '▸', '◂', '⏴', '⏵', '‣'] },
-            { name: "Lines & Corners", symbols: ['─', '━', '⁃', '│', '┃', '┌', '┐', '└', '┘', '┬', '┴', '┼', '╱', '╲'] },
-            { name: "Circles & Dots", symbols: ['●', '○', '◉', '◎', '◍', '◦', '•'] },
-            { name: "Weather & Seasonal", symbols: ['☀', '☁', '⛈', '🌤', '🌥', '🌦', '🌧', '🌨', '🌩', '🌪', '🌫', '☇', '☈', '☄', '☂', '⛇', '☃', '☉', '☼', '☽', '☾', '❄', '❅', '❆'] },
-            { name: "Currency", symbols: ['$', '¢', '£', '¥', '₠', '₡', '₢', '₣', '₤', '₥', '₦', '₧', '€', '₹', '₩', '₪', '₮', '৳', '௹', '฿'] },
-            { name: "Animals & Flowers", symbols: ['🐿', '🕊', '🕷', '🕸', '✾', '✿', '❀', '❁'] },
-            { name: "Recycling", symbols: ['♲', '♻', '♳', '♴', '♵', '♶', '♷', '♸', '♹', '♺', '♼', '♽'] }
-        ];
+        // Symbol categories - cleaned up and expanded
+const symbolCategories = [
+    { id: "stars", name: "Stars", symbols: ['★', '☆', '≛', '⋆', '⍟', '⍣', '✦', '✧', '✪', '✫', '✬', '✯', '✰', '✵', '✶', '✷', '✸', '✹', '❂', '⭑', '⭒', '✭', '✮', '✩', '✼', '✻', '✺', '✽', '✾', '❈', '❉', '❊'] },
+    { id: "office", name: "Copyright, Trademark & Office", symbols: ['©', '®', '™', '℗', '℠', '℡', '☎', '☏', '✆', '⚖', '§', '☤', '℅', '℆', '℞', '℣', '℥', '℀', '℁', '✁', '✂', '✃', '✄', '✉', '✎', '✏', '✐', '✑', '✒', '☞', '☛', '☟', '☜', '☚'] },
+    { id: "dangerous", name: "Dangerous Things", symbols: ['☢', '☣', '⚠', '☠', '☡', '⚔', '⚰', '⛓'] },
+    { id: "brackets", name: "Brackets", symbols: ['⟨', '⟩', '❨', '❩', '❪', '❫', '❲', '❳', '〈', '〉', '《', '》', '「', '」', '『', '』', '〔', '〕', '【', '】', '〖', '〗', '〘', '〙', '〚', '〛', '⸢', '⸣', '⸤', '⸥', '⟅', '⟆', '⟦', '⟧', '⟨', '⟩', '⟪', '⟫', '❬', '❭', '❮', '❯', '❰', '❱'] },
+    { id: "chess", name: "Chess", symbols: ['♔', '♕', '♖', '♗', '♘', '♙', '♚', '♛', '♜', '♝', '♞', '♟', '⚔', '☗', '☖'] },
+    { id: "cards", name: "Playing Cards", symbols: ['♠', '♥', '♦', '♣', '♤', '♡', '♢', '♧'] },
+    { id: "music", name: "Musical Notes", symbols: ['𝅜', '𝅝', '𝅗𝅥', '𝅘𝅥', '♪', '𝅘𝅥𝅮', '𝅘𝅥𝅮', '𝅘𝅥𝅯', '𝅘𝅥𝅰', '𝅘𝅥𝅱', '𝅘𝅥𝅲', '♫', '♬', '♭', '♮', '♯', '𝄀', '𝄁', '𝄂', '𝄃', '𝄄', '𝄅', '𝄆', '𝄇', '𝄈', '𝄞', '𝄟', '𝄠', '𝄡', '𝄢', '𝄣', '𝄤', '𝄫', '𝄬', '𝄭', '𝄮', '𝄯', '𝄰', '𝄱', '𝄲', '𝄳', '𝄺', '𝄻', '𝄼', '𝄽', '𝄾', '𝄿', '𝅀', '𝅁', '𝅂', '𝆔', '𝆕', '𝆺𝅥', '𝆹𝅥𝅮', '𝆺𝅥𝅮', '𝆹𝅥𝅯', '𝆺𝅥𝅯', '𝇒', '𝇓', '𝇕', '𝇗', '𝇛'] },
+    { id: "degrees", name: "Degrees", symbols: ['°', '℃', '℉', 'º', 'ª', 'K', '℄'] },
+    { id: "units", name: "Measurement Units", symbols: ['ℓ', '㎏', '㎜', '㎞', '㎡', '㏄', '㏊', '㏌', '㏍', '㏎', 'µ', 'Å', 'Ω', '℧', '㎈', '㎉', '㏆', '㎐', '㎑', '㎒', '㎓', '㎔', '㎕', '㎖', '㎗', '㎘', '㎙', '㎚', '㎛', '㎜', '㎝', '㎞', '㎟', '㎠', '㎤', '㎥', '㎦', '㎪', '㎫', '㎬', '㎭', '㎮', '㎯'] },
+    { id: "arrows", name: "Arrows", symbols: ['→', '←', '↑', '↓', '↔', '↕', '↖', '↗', '↘', '↙', '⟿', '⟴', '↩', '↪', '↫', '↬', '↭', '↮', '↯', '↰', '↱', '↲', '↳', '↴', '↵', '↶', '↷', '↸', '↹', '↺', '↻', '↼', '↽', '↾', '↿', '⇀', '⇁', '⇂', '⇃', '⇄', '⇅', '⇆', '⇇', '⇈', '⇉', '⇊', '⇋', '⇌', '⇍', '⇎', '⇏', '⇐', '⇑', '⇒', '⇓', '⇔', '⇕', '⇖', '⇗', '⇘', '⇙', '⇚', '⇛', '⇜', '⇝', '⇞', '⇟', '⇠', '⇡', '⇢', '⇣', '⇤', '⇥', '⇦', '⇧', '⇨', '⇩', '⇪', '⇫', '⇬', '⇭', '⇮', '⇯', '⇰', '⇱', '⇲', '⇳', '⇴', '⇵', '⇶', '⇷', '⇸', '⇹', '⇺', '⇻', '⇼', '⇽', '⇾', '⇿', '⟰', '⟱', '⟲', '⟳'] },
+    { id: "hearts", name: "Hearts", symbols: ['❤', '❥', '♥', '♡', '❣', '❦', '❧', '☙'] },
+    { id: "checkmarks", name: "Checkmarks & Crosses", symbols: ['✔', '✓', '🗸', '⍻', '☑', '🗹', '✕', '✖', '✗', '✘', '☒', '✚', '✛', '✜', '✝', '✞', '✟', '✴'] },
+    { id: "gender", name: "Gender", symbols: ['♂', '♀', '⚤', '⚢', '⚣', '⚥', '⚦', '⚨', '⚧', '⚩'] },
+    { id: "faces", name: "Smileys & Faces", symbols: ['☺', '☻', '〠'] },
+    { id: "punctuation", name: "Punctuation Marks", symbols: ['‼', '⁇', '⁉', '‽', '¡', '¿', '※', '¶', '‖', '‗', '"', '"', '„', '‟', '❛', '❜', '❝', '❞', '…', '⋮', '⋯', '⋰', '⋱', '·', '※', '‼', '⁇', '⁉', '‽', '¡', '¿', '⸮', '⁈', '⁋', '❡', '❢', '❣', '⸘', '¿¡', '☛', '❧', '⚜'] },
+    { id: "math", name: "Math Symbols", symbols: ['∑', '∏', '∫', '√', '∛', '∜', '≠', '≈', '≉', '≍', '≭', '≤', '≥', '≰', '≱', '∞', '∝', '≅', '∇', '∂', '≡', '∴', '∵', '∷', '∼', '∽', '≙', '≚', '≛', '≜', '≝', '≞', '≟', '≣', '≤', '≥', '≦', '≧', '≨', '≩', '≪', '≫', '≲', '≳', '≶', '≷', '≺', '≻', '≼', '≽', '⊀', '⊁', '⊂', '⊃', '⊄', '⊅', '⊆', '⊇', '⊈', '⊉', '⊊', '⊋', '⊏', '⊐', '⊑', '⊒', '⊓', '⊔', '⊕', '⊖', '⊗', '⊘', '⊙', '⊚', '⊛', '⊜', '⊝', '⊞', '⊟', '⊠', '⊡', '⊢', '⊣', '⊤', '⊥', '⊦', '⊧', '⊨', '⊩', '⊪', '⊫', '⊬', '⊭', '⊮', '⊯', '⊰', '⊱', '⊲', '⊳', '⊴', '⊵', '⊶', '⊷', '⊸', '⊹', '⊺', '⊻', '⊼', '⊽', '⊾', '⊿', '⋀', '⋁', '⋂', '⋃', '⋄', '⋅', '⋆', '⋇', '⋈', '⋉', '⋊', '⋋', '⋌', '⋍', '⋎', '⋏', '⋐', '⋑', '⋒', '⋓', '⋔', '⋕', '⋖', '⋗', '⋘', '⋙', '⋚', '⋛', '⋜', '⋝', '⋞', '⋟', '⋠', '⋡', '⋢', '⋣', '⋤', '⋥', '⋦', '⋧', '⋨', '⋩', '⋪', '⋫', '⋬', '⋭', '⋮', '⋯', '⋰', '⋱', '⋲', '⋳', '⋴', '⋵', '⋶', '⋷', '⋸', '⋹', '⋺', '⋻', '⋼', '⋽', '⋾', '⋿'] },
+    { id: "fractions", name: "Fractions & Numbers", symbols: ['⅟', '½', '↉', '⅓', '⅔', '¼', '¾', '⅕', '⅖', '⅗', '⅘', '⅙', '⅚', '⅐', '⅛', '⅜', '⅝', '⅞', '⅑', '⅒', 'Ⅰ', 'Ⅱ', 'Ⅲ', 'Ⅳ', 'Ⅴ', 'Ⅵ', 'Ⅶ', 'Ⅷ', 'Ⅸ', 'Ⅹ', 'Ⅺ', 'Ⅻ', 'ⅰ', 'ⅱ', 'ⅲ', 'ⅳ', 'ⅴ', 'ⅵ', 'ⅶ', 'ⅷ', 'ⅸ', 'ⅹ', 'ⅺ', 'ⅻ', '⓪', '①', '②', '③', '④', '⑤', '⑥', '⑦', '⑧', '⑨', '⑩', '⑪', '⑫', '⑬', '⑭', '⑮', '⑯', '⑰', '⑱', '⑲', '⑳', '㉑', '㉒', '㉓', '㉔', '㉕', '㉖', '㉗', '㉘', '㉙', '㉚'] },
+    { id: "technical", name: "Technical & Tools", symbols: ['⚙', '⚛', '⚒', '⚗', '⚔', '⚖', '⚕', '⚠', '☢', '☣', '⚠', '☎', '☏', '☑', '☒', '☓', '☘', '☠', '☢', '☣', '☤', '☥', '☦', '☧', '☨', '☩', '☪', '☫', '☬', '☭', '☮', '☯', '☸', '♲', '♻', '⚒', '⚔', '⚕', '⚖', '⚗', '⚘', '⚙', '⚚', '⚛', '⚜', '⚝', '⚞', '⚟', '⚠', '⚢', '⚧'] },
+    { id: "squares", name: "Squares & Rectangles", symbols: ['■', '□', '▢', '▣', '▤', '▥', '▦', '▧', '▨', '▩', '▪', '▫', '▬', '▭', '▮', '▯', '▰', '▱', '▲', '△', '▴', '▵', '▶', '▷', '▸', '▹', '►', '▻', '▼', '▽', '▾', '▿', '◀', '◁', '◂', '◃', '◄', '◅', '◆', '◇', '◈', '◉', '◊', '○', '◌', '◍', '◎', '●', '◐', '◑', '◒', '◓', '◔', '◕', '◖', '◗', '◘', '◙', '◚', '◛', '◜', '◝', '◞', '◟', '◠', '◡', '◢', '◣', '◤', '◥', '◦', '◧', '◨', '◩', '◪', '◫', '◬', '◭', '◮', '◯', '◰', '◱', '◲', '◳', '◴', '◵', '◶', '◷', '◸', '◹', '◺', '◻', '◼', '◽', '◾', '◿'] },
+    { id: "lines", name: "Lines & Corners", symbols: ['─', '━', '⁃', '│', '┃', '┌', '┐', '└', '┘', '┬', '┴', '┼', '╱', '╲', '╳', '╌', '╍', '┄', '┅', '┆', '┇', '┈', '┉', '┊', '┋', '╭', '╮', '╯', '╰', '╱', '╲', '╳', '╴', '╵', '╶', '╷', '┏', '┓', '┗', '┛', '┣', '┫', '┳', '┻', '╋', '├', '┤', '┼', '║', '╔', '╗', '╚', '╝', '╠', '╣', '╦', '╩', '╬', '╒', '╕', '╘', '╛', '╞', '╡', '╤', '╧', '╪'] },
+    { id: "circles", name: "Circles & Dots", symbols: ['●', '○', '◉', '◎', '◍', '◦', '•', '◌', '◯', '⊙', '⊚', '⊛', '⊜', '⊝', '∘', '∙', '∵', '⊕', '⊖', '⊗', '⊘', '⊝', '⊙', '⊚', '⌾', '⊛', '⊖', '⍟', '⊗', '⊘', '◍', '◎', '◐', '◑', '◒', '◓', '◔', '◕', '◴', '◵', '◶', '◷'] },
+    { id: "weather", name: "Weather & Seasonal", symbols: ['☀', '☁', '⛈', '☇', '☈', '☄', '☂', '⛇', '☃', '☉', '☼', '☽', '☾', '❄', '❅', '❆', '☼', '☾', '☀', '☁', '⛆', '⛈', '⛇'] },
+    { id: "currency", name: "Currency", symbols: ['$', '¢', '£', '¥', '₠', '₡', '₢', '₣', '₤', '₥', '₦', '₧', '€', '₹', '₩', '₪', '₮', '৳', '௹', '฿', '₫', '₭', '₯', '₱', '₲', '₴', '₵', '₸', '₺', '₼', '₽', '₾', '₿', '꠸', '﷼', '﹩', '＄', '￠', '￡', '￥', '￦'] },
+    { id: "zodiac", name: "Zodiac & Planets", symbols: ['☉', '☽', '☿', '♀', '♁', '♂', '♃', '♄', '♅', '♆', '♇', '⚳', '⚴', '⚵', '⚶', '⚷', '⚸', '⚹', '⚺', '⚻', '⚼', '⛢', '⛣', '⛤', '⛥', '⛦', '⛧', '⛨', '⛫', '⛬', '⛭', '⛮', '⛯'] },
+    { id: "tech", name: "Technology & Electronics", symbols: ['⌨', '⌧', '⎙', '⏱', '⏲', '☎', '☏', '✆', '⌘', '⌥', '⎇', '⇧', '⇪', '⌃', '⎋', '⌫'] },
+    { id: "phonetic", name: "Phonetic Symbols", symbols: ['ɐ', 'ɑ', 'ɒ', 'ɓ', 'ɔ', 'ɕ', 'ɖ', 'ɗ', 'ɘ', 'ə', 'ɚ', 'ɛ', 'ɜ', 'ɝ', 'ɞ', 'ɟ', 'ɠ', 'ɡ', 'ɢ', 'ɣ', 'ɤ', 'ɥ', 'ɦ', 'ɧ', 'ɨ', 'ɩ', 'ɪ', 'ɫ', 'ɬ', 'ɭ', 'ɮ', 'ɯ', 'ɰ', 'ɱ', 'ɲ', 'ɳ', 'ɴ', 'ɵ', 'ɶ', 'ɷ', 'ɸ', 'ɹ', 'ɺ', 'ɻ', 'ɼ', 'ɽ', 'ɾ', 'ɿ', 'ʀ', 'ʁ', 'ʂ', 'ʃ', 'ʄ', 'ʅ', 'ʆ', 'ʇ', 'ʈ', 'ʉ', 'ʊ', 'ʋ', 'ʌ', 'ʍ', 'ʎ', 'ʏ', 'ʐ', 'ʑ', 'ʒ', 'ʓ', 'ʔ', 'ʕ', 'ʖ', 'ʗ', 'ʘ', 'ʙ', 'ʚ', 'ʛ', 'ʜ', 'ʝ', 'ʞ', 'ʟ', 'ʠ', 'ʡ', 'ʢ', 'ʣ', 'ʤ', 'ʥ', 'ʦ', 'ʧ', 'ʨ', 'ʩ', 'ʪ', 'ʫ', 'ʬ', 'ʭ', 'ʮ', 'ʯ'] },
+    { id: "diacritics", name: "Diacritical Marks", symbols: ['̀', '́', '̂', '̃', '̄', '̅', '̆', '̇', '̈', '̉', '̊', '̋', '̌', '̍', '̎', '̏', '̐', '̑', '̒', '̓', '̔', '̕', '̖', '̗', '̘', '̙', '̚', '̛', '̜', '̝', '̞', '̟', '̠', '̡', '̢', '̣', '̤', '̥', '̦', '̧', '̨', '̩', '̪', '̫', '̬', '̭', '̮', '̯', '̰', '̱', '̲', '̳', '̴', '̵', '̶', '̷', '̸', '̹', '̺', '̻', '̼', '̽', '̾', '̿', '̀', '́', '͂', '̓', '̈́', '͆', '͇', '͈', '͉', '͊', '͋', '͌', '͍', '͎', '͏', '͐', '͑', '͒', '͓', '͔', '͕', '͖', '͗', '͘', '͙', '͚', '͛', '͜', '͝', '͞', '͟', '͠', '͡', '͢', 'ͣ', 'ͤ', 'ͥ', 'ͦ', 'ͧ', 'ͨ', 'ͩ', 'ͪ', 'ͫ', 'ͬ', 'ͭ', 'ͮ', 'ͯ'] },
+    { id: "box", name: "Box Drawing", symbols: ['─', '━', '│', '┃', '┄', '┅', '┆', '┇', '┈', '┉', '┊', '┋', '┌', '┍', '┎', '┏', '┐', '┑', '┒', '┓', '└', '┕', '┖', '┗', '┘', '┙', '┚', '┛', '├', '┝', '┞', '┟', '┠', '┡', '┢', '┣', '┤', '┥', '┦', '┧', '┨', '┩', '┪', '┫', '┬', '┭', '┮', '┯', '┰', '┱', '┲', '┳', '┴', '┵', '┶', '┷', '┸', '┹', '┺', '┻', '┼', '┽', '┾', '┿', '╀', '╁', '╂', '╃', '╄', '╅', '╆', '╇', '╈', '╉', '╊', '╋', '╌', '╍', '╎', '╏', '═', '║', '╒', '╓', '╔', '╕', '╖', '╗', '╘', '╙', '╚', '╛', '╜', '╝', '╞', '╟', '╠', '╡', '╢', '╣', '╤', '╥', '╦', '╧', '╨', '╩', '╪', '╫', '╬', '╭', '╮', '╯', '╰', '╱', '╲', '╳', '╴', '╵', '╶', '╷', '╸', '╹', '╺', '╻', '╼', '╽', '╾', '╿'] },
+    { id: "braille", name: "Braille Patterns", symbols: ['⠀', '⠁', '⠂', '⠃', '⠄', '⠅', '⠆', '⠇', '⠈', '⠉', '⠊', '⠋', '⠌', '⠍', '⠎', '⠏', '⠐', '⠑', '⠒', '⠓', '⠔', '⠕', '⠖', '⠗', '⠘', '⠙', '⠚', '⠛', '⠜', '⠝', '⠞', '⠟', '⠠', '⠡', '⠢', '⠣', '⠤', '⠥', '⠦', '⠧', '⠨', '⠩', '⠪', '⠫', '⠬', '⠭', '⠮', '⠯', '⠰', '⠱', '⠲', '⠳', '⠴', '⠵', '⠶', '⠷', '⠸', '⠹', '⠺', '⠻', '⠼', '⠽', '⠾', '⠿', '⡀', '⡁', '⡂', '⡃', '⡄', '⡅', '⡆', '⡇', '⡈', '⡉', '⡊', '⡋', '⡌', '⡍', '⡎', '⡏', '⡐', '⡑', '⡒', '⡓', '⡔', '⡕', '⡖', '⡗', '⡘', '⡙', '⡚', '⡛', '⡜', '⡝', '⡞', '⡟', '⡠', '⡡', '⡢', '⡣', '⡤', '⡥', '⡦', '⡧', '⡨', '⡩', '⡪', '⡫', '⡬', '⡭', '⡮', '⡯', '⡰', '⡱', '⡲', '⡳', '⡴', '⡵', '⡶', '⡷', '⡸', '⡹', '⡺', '⡻', '⡼', '⡽', '⡾', '⡿', '⢀', '⢁', '⢂', '⢃', '⢄', '⢅', '⢆', '⢇', '⢈', '⢉', '⢊', '⢋', '⢌', '⢍', '⢎', '⢏', '⢐'] }
+	]
+	
+	// DOM Elements
+const searchInput = document.getElementById('searchInput');
+const copyInput = document.getElementById('copyInput');
+const notification = document.getElementById('notification');
+const symbolsContainer = document.getElementById('symbols');
+const categoriesNav = document.getElementById('categoriesNav');
+const favoritesContainer = document.getElementById('favorites-container');
+const themeToggle = document.getElementById('themeToggle');
+const scrollTopBtn = document.getElementById('scrollTop');
 
-        // Generate symbols with categories
-        const symbolsDiv = document.getElementById('symbols');
-        symbolCategories.forEach(category => {
-            const categoryDiv = document.createElement('div');
-            categoryDiv.classList.add('category');
+// Load saved favorites from localStorage
+let favorites = JSON.parse(localStorage.getItem('symbol-favorites')) || [];
 
-            const categoryTitle = document.createElement('h2');
-            categoryTitle.textContent = category.name;
-            categoryDiv.appendChild(categoryTitle);
+// Load user theme preference from localStorage
+const savedTheme = localStorage.getItem('symbol-theme');
+if (savedTheme === 'light') {
+    document.body.classList.add('light-mode');
+}
 
-            const symbolContainer = document.createElement('div');
-            symbolContainer.classList.add('symbol-container');
+// Initialize the application
+function init() {
+    // Create category navigation buttons
+    createCategoryNavigation();
+    
+    // Create symbol sections for each category
+    createSymbolSections();
+    
+    // Load and display favorites
+    displayFavorites();
+    
+    // Listen for scroll events
+    window.addEventListener('scroll', handleScroll);
+    
+    // Add event listeners for keyboard shortcuts
+    document.addEventListener('keydown', handleKeyboardShortcuts);
+}
 
-            category.symbols.forEach(symbol => {
-                const symbolElem = document.createElement('div');
-                symbolElem.classList.add('symbol');
-                symbolElem.textContent = symbol;
-                symbolElem.addEventListener('click', () => appendToInput(symbol));
-                symbolContainer.appendChild(symbolElem);
-            });
+// Create category navigation buttons
+function createCategoryNavigation() {
+    symbolCategories.forEach(category => {
+        const categoryBtn = document.createElement('button');
+        categoryBtn.className = 'category-btn';
+        categoryBtn.textContent = category.name;
+        categoryBtn.dataset.target = category.id;
+        categoryBtn.addEventListener('click', () => scrollToCategory(category.id));
+        categoriesNav.appendChild(categoryBtn);
+    });
+}
 
-            categoryDiv.appendChild(symbolContainer);
-            symbolsDiv.appendChild(categoryDiv);
+// Create symbol sections for each category
+function createSymbolSections() {
+    symbolCategories.forEach(category => {
+        // Create category container
+        const categoryDiv = document.createElement('div');
+        categoryDiv.id = category.id;
+        categoryDiv.className = 'category';
+        
+        // Create category title
+        const categoryTitle = document.createElement('h2');
+        categoryTitle.textContent = category.name;
+        categoryDiv.appendChild(categoryTitle);
+        
+        // Create symbol container
+        const symbolContainer = document.createElement('div');
+        symbolContainer.className = 'symbol-container';
+        
+        // Create symbol elements
+        category.symbols.forEach(symbol => {
+            const symbolElement = document.createElement('div');
+            symbolElement.className = 'symbol';
+            symbolElement.textContent = symbol;
+            symbolElement.title = `Click to add ${symbol} to input`;
+            symbolElement.addEventListener('click', () => copySymbol(symbol));
+            symbolContainer.appendChild(symbolElement);
         });
+        
+        // Append symbol container to category div
+        categoryDiv.appendChild(symbolContainer);
+        
+        // Append category div to symbols container
+        symbolsContainer.appendChild(categoryDiv);
+    });
+}
 
-        // Function to copy the symbol to clipboard without adding it to the text box
-        function appendToInput(symbol) {
-            showNotification(`${symbol} copied to clipboard!`);
-            navigator.clipboard.writeText(symbol);
+// Copy symbol to clipboard
+function copySymbol(symbol) {
+    // Create a temporary input element
+    const tempInput = document.createElement('input');
+    tempInput.value = symbol;
+    document.body.appendChild(tempInput);
+
+    // Select and copy the symbol
+    tempInput.select();
+    tempInput.setSelectionRange(0, 99999); // For mobile devices
+    document.execCommand('copy');
+
+    // Remove temporary input
+    document.body.removeChild(tempInput);
+
+    // Optional: Flash animation or feedback
+    copyInput.classList.add('flash');
+    setTimeout(() => copyInput.classList.remove('flash'), 300);
+	showNotification("Copied to clipboard!");
+}
+
+// Copy text from input field
+function copyText() {
+    // If input is empty, show error notification
+    if (!copyInput.value) {
+        showNotification("Nothing to copy!", "error");
+        return;
+    }
+    
+    copyInput.select();
+    document.execCommand('copy');
+    
+    // Show success notification
+    showNotification("Copied to clipboard!");
+    
+    // Visual feedback
+    copyInput.classList.add('copied');
+    setTimeout(() => copyInput.classList.remove('copied'), 500);
+}
+
+// Clear input field
+function clearText() {
+    copyInput.value = '';
+    copyInput.focus();
+    showNotification("Cleared input!");
+}
+
+// Add current input to favorites
+function addToFavorites() {
+    const symbolToAdd = copyInput.value.trim();
+    
+    // Check if input is empty
+    if (!symbolToAdd) {
+        showNotification("Nothing to add to favorites!", "error");
+        return;
+    }
+    
+    // Check if already in favorites
+    if (favorites.includes(symbolToAdd)) {
+        showNotification("Already in favorites!", "warning");
+        return;
+    }
+    
+    // Add to favorites array
+    favorites.push(symbolToAdd);
+    
+    // Save to localStorage
+    localStorage.setItem('symbol-favorites', JSON.stringify(favorites));
+    
+    // Update favorites display
+    displayFavorites();
+    
+    // Show success notification
+    showNotification("Added to favorites!");
+    
+    // Clear input
+    copyInput.value = '';
+}
+
+// Display favorites
+function displayFavorites() {
+    // Clear current favorites
+    favoritesContainer.innerHTML = '';
+    
+    // Check if favorites array is empty
+    if (favorites.length === 0) {
+        const message = document.createElement('p');
+        message.textContent = 'Your favorites will appear here.';
+        message.style.opacity = '0.7';
+        favoritesContainer.appendChild(message);
+        return;
+    }
+    
+    // Add each favorite to the container
+    favorites.forEach((symbol, index) => {
+        const favoriteElement = document.createElement('div');
+        favoriteElement.className = 'favorite-symbol';
+        favoriteElement.textContent = symbol;
+        favoriteElement.title = `Click to copy ${symbol}`;
+        
+        // Click to copy the favorite
+        favoriteElement.addEventListener('click', () => {
+            copyInput.value = symbol;
+            copyText();
+        });
+        
+        // Add remove button
+        const removeBtn = document.createElement('div');
+        removeBtn.className = 'remove-fav';
+        removeBtn.textContent = '×';
+        removeBtn.title = 'Remove from favorites';
+        removeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            removeFavorite(index);
+        });
+        
+        favoriteElement.appendChild(removeBtn);
+        favoritesContainer.appendChild(favoriteElement);
+    });
+}
+
+// Remove symbol from favorites
+function removeFavorite(index) {
+    // Remove from array
+    favorites.splice(index, 1);
+    
+    // Save to localStorage
+    localStorage.setItem('symbol-favorites', JSON.stringify(favorites));
+    
+    // Update favorites display
+    displayFavorites();
+    
+    // Show notification
+    showNotification("Removed from favorites");
+}
+
+// Search symbols
+function searchSymbols() {
+    const searchTerm = searchInput.value.toLowerCase().trim();
+    
+    // If search is empty, show all categories
+    if (!searchTerm) {
+        resetSearch();
+        return;
+    }
+    
+    // Count of results
+    let resultCount = 0;
+    
+    // Loop through all symbol categories
+    symbolCategories.forEach(category => {
+        const categoryElement = document.getElementById(category.id);
+        const symbolElements = categoryElement.querySelectorAll('.symbol');
+        let categoryHasMatches = false;
+        
+        // Check each symbol in the category
+        symbolElements.forEach(symbolElement => {
+            const symbol = symbolElement.textContent;
+            
+            // Check if symbol matches search term
+            if (symbol.toLowerCase().includes(searchTerm)) {
+                symbolElement.style.display = 'flex';
+                symbolElement.classList.add('search-match');
+                categoryHasMatches = true;
+                resultCount++;
+            } else {
+                symbolElement.style.display = 'none';
+                symbolElement.classList.remove('search-match');
+            }
+        });
+        
+        // Show or hide the category based on matches
+        if (categoryHasMatches) {
+            categoryElement.style.display = 'block';
+        } else {
+            categoryElement.style.display = 'none';
         }
+    });
+    
+    // Show result message
+    if (resultCount === 0) {
+        showNotification("No matches found", "warning");
+    } else {
+        showNotification(`Found ${resultCount} matches`);
+    }
+}
 
-        // Function to copy content of text box to clipboard
-        function copyText() {
-            const input = document.getElementById('copyInput');
-            navigator.clipboard.writeText(input.value).then(() => {
-                showNotification(`Text copied to clipboard!`);
+// Reset search results
+function resetSearch() {
+    searchInput.value = '';
+    
+    // Show all categories and symbols
+    symbolCategories.forEach(category => {
+        const categoryElement = document.getElementById(category.id);
+        categoryElement.style.display = 'block';
+        
+        const symbolElements = categoryElement.querySelectorAll('.symbol');
+        symbolElements.forEach(symbolElement => {
+            symbolElement.style.display = 'flex';
+            symbolElement.classList.remove('search-match');
+        });
+    });
+}
+
+// Show notification
+function showNotification(message, type = 'success') {
+    // Set notification text
+    notification.textContent = message;
+    
+    // Set notification type
+    notification.className = '';
+    notification.classList.add('show', type);
+    
+    // Hide notification after 2 seconds
+    setTimeout(() => {
+        notification.classList.remove('show');
+    }, 2000);
+}
+
+// Scroll to specific category
+function scrollToCategory(categoryId) {
+    const categoryElement = document.getElementById(categoryId);
+    
+    // Highlight active category button
+    const categoryButtons = document.querySelectorAll('.category-btn');
+    categoryButtons.forEach(btn => {
+        if (btn.dataset.target === categoryId) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+    
+    // Scroll to category with smooth animation
+    window.scrollTo({
+        top: categoryElement.offsetTop - 100,
+        behavior: 'smooth'
+    });
+}
+
+// Handle scroll events
+function handleScroll() {
+    // Show/hide scroll to top button
+    if (window.pageYOffset > 300) {
+        scrollTopBtn.classList.add('show');
+    } else {
+        scrollTopBtn.classList.remove('show');
+    }
+    
+    // Highlight current category in navigation
+    const scrollPosition = window.scrollY + 150;
+    
+    // Find the current visible category
+    for (let i = symbolCategories.length - 1; i >= 0; i--) {
+        const categoryId = symbolCategories[i].id;
+        const categoryElement = document.getElementById(categoryId);
+        
+        if (categoryElement.offsetTop <= scrollPosition) {
+            // Remove active class from all buttons
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
             });
+            
+            // Add active class to current category button
+            const activeButton = document.querySelector(`.category-btn[data-target="${categoryId}"]`);
+            if (activeButton) {
+                activeButton.classList.add('active');
+            }
+            
+            break;
         }
+    }
+}
 
-       // Function to copy content of text box to clipboard and show copied text in the notification
-       function copyText() {
-           const input = document.getElementById('copyInput');
-           const copiedText = input.value; // Get the current content of the text box
-           navigator.clipboard.writeText(copiedText).then(() => {
-               showNotification(`${copiedText} copied to clipboard!`);
-           });
-       }
+// Scroll to top function
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
 
-        // Clear text box
-        function clearText() {
-            document.getElementById('copyInput').value = "";
-        }
+// Toggle theme between dark and light mode
+function toggleTheme() {
+    const body = document.body;
+    body.classList.toggle('light-mode');
+    
+    // Save theme preference to localStorage
+    if (body.classList.contains('light-mode')) {
+        localStorage.setItem('symbol-theme', 'light');
+        themeToggle.textContent = '🌙 Toggle Theme';
+    } else {
+        localStorage.setItem('symbol-theme', 'dark');
+        themeToggle.textContent = '🌓 Toggle Theme';
+    }
+}
 
-       // Show notification
-        function showNotification(message) {
-            const notification = document.getElementById('notification');
-            notification.textContent = message;
-            notification.style.opacity = '1';
-            notification.style.visibility = 'visible';
-            setTimeout(() => {
-                notification.style.opacity = '0';
-                notification.style.visibility = 'hidden';
-            }, 1500);
-        }
-    </script>
-</body>
-</html>
+// Handle keyboard shortcuts
+function handleKeyboardShortcuts(e) {
+    // Ctrl+C or Command+C to copy
+    if ((e.ctrlKey || e.metaKey) && e.key === 'c' && document.activeElement === copyInput) {
+        copyText();
+    }
+    
+    // Escape key to clear input
+    if (e.key === 'Escape') {
+        clearText();
+    }
+    
+    // Ctrl+F or Command+F to focus search
+    if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+        e.preventDefault();
+        searchInput.focus();
+    }
+    
+    // Enter in search input to perform search
+    if (e.key === 'Enter' && document.activeElement === searchInput) {
+        searchSymbols();
+    }
+}
+
+// Add event listeners
+document.addEventListener('DOMContentLoaded', init);
+themeToggle.addEventListener('click', toggleTheme);
+scrollTopBtn.addEventListener('click', scrollToTop);
+searchInput.addEventListener('keyup', function(e) {
+    if (e.key === 'Enter') {
+        searchSymbols();
+    }
+});
+	
+	</script>
+	</body>
+	</html>
