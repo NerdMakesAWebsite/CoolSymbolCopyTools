@@ -1,0 +1,51 @@
+/* Custom dark theme for Giscus */
+:root {
+  --color-text: #00ff00;
+  --color-bg: #0d0f12;
+  --color-border: #333;
+  --color-primary: #00ff00;
+  --color-accent: #00ff00;
+  --font-main: 'Courier New', monospace;
+}
+
+/* Giscus container */
+.giscus {
+  font-family: var(--font-main);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+}
+
+/* Main comments */
+.giscus-frame {
+  background-color: var(--color-bg);
+}
+
+/* Input areas */
+.giscus textarea, .giscus input[type="text"] {
+  font-family: var(--font-main);
+  background-color: #1c1e22;
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+}
+
+/* Buttons */
+.giscus button {
+  font-family: var(--font-main);
+  background-color: #333;
+  color: var(--color-text);
+  border: 1px solid var(--color-primary);
+}
+
+.giscus button:hover {
+  background-color: var(--color-primary);
+  color: var(--color-bg);
+}
+
+/* Other elements you might want to style */
+.giscus-comment {
+  border-color: var(--color-border);
+}
+
+.giscus a {
+  color: var(--color-primary);
+}
