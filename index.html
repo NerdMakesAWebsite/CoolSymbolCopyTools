@@ -481,10 +481,6 @@
                 font-size: 1.7rem;
             }
         }
-
-	.md-typeset iframe.giscus-frame {
-               color-scheme: light dark !important;
-        }
     </style>
 </head>
 <body>
@@ -543,20 +539,20 @@
     <!-- Comments Section -->
     <div id="comments"></div>
     <script src="https://giscus.app/client.js"
-        data-repo="nerdmakesawebsite/CoolSymbolCopyTools"
-        data-repo-id="R_kgDONpNHJg"
-        data-category="General"
-        data-category-id="DIC_kwDONpNHJs4CnntV"
-        data-mapping="pathname"
-        data-strict="0"
-        data-reactions-enabled="1"
-        data-emit-metadata="0"
-        data-input-position="bottom"
-        data-theme="preferred_color_scheme"
-        data-lang="en"
-        crossorigin="anonymous"
-        async>
-</script>
+            data-repo="NerdMakesAWebsite/CoolSymbolCopyTools"
+            data-repo-id="[ENTER REPO ID HERE]"
+            data-category="[ENTER CATEGORY NAME HERE]"
+            data-category-id="[ENTER CATEGORY ID HERE]"
+            data-mapping="pathname"
+            data-strict="0"
+            data-reactions-enabled="1"
+            data-emit-metadata="0"
+            data-input-position="bottom"
+            data-theme="preferred_color_scheme"
+            data-lang="en"
+            crossorigin="anonymous"
+            async>
+    </script>
 
     <script>
         // Symbol categories - cleaned up and expanded
@@ -663,7 +659,7 @@ function createSymbolSections() {
             const symbolElement = document.createElement('div');
             symbolElement.className = 'symbol';
             symbolElement.textContent = symbol;
-            symbolElement.title = `Click to add ${symbol} to input`;
+            symbolElement.title = `Click to copy ${symbol} to clipboard`;
             symbolElement.addEventListener('click', () => copySymbol(symbol));
             symbolContainer.appendChild(symbolElement);
         });
